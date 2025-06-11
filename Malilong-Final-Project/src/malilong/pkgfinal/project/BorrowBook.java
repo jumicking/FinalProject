@@ -62,7 +62,7 @@ public class BorrowBook extends javax.swing.JFrame {
         }
     }
 
-    void AddtoAccount(String Username, String BookRef, String Title, String Remarks) {
+    void AddtoAccount(String Username, String BookRef, String Title, String Remarks, String Number) {
         DBconnection.init();
         verify = 0;
         try {
@@ -99,7 +99,7 @@ public class BorrowBook extends javax.swing.JFrame {
             ps.setString(3, Title);
             ps.setString(4, UName);
             ps.setString(5, usercontact);
-            ps.setString(6, "Out : " + Remarks);
+            ps.setString(6, "Out : "+ Number + " " + Remarks);
             int inserted = ps.executeUpdate();
 
             if (inserted > 0) {
@@ -225,6 +225,7 @@ public class BorrowBook extends javax.swing.JFrame {
         String getTitle = BookTitle.getText();
         String getUser = BUsername.getText();
         String getRemarks = remarks.getText();
+        String getNumbers = NumberofBooks.getText();
         int getNumber = Integer.parseInt(NumberofBooks.getText());
 
         if (getReference.equals("") || getUser.equals("") || getTitle.equals("") || getRemarks.equals("")) {
@@ -235,7 +236,7 @@ public class BorrowBook extends javax.swing.JFrame {
             if (verify == 1) {
                 JOptionPane.showMessageDialog(null, "Wrong information!");
             } else {
-                AddtoAccount(getUser, getReference, getTitle, getRemarks);
+                AddtoAccount(getUser, getReference, getTitle, getRemarks, getNumbers);
                 AddtoInventory(getReference, getNumber);
                 Librarian open = new Librarian();
                 open.setVisible(true);

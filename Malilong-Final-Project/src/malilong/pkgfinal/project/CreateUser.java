@@ -57,8 +57,6 @@ public class CreateUser extends javax.swing.JFrame {
             insertAccount.setString(4, AccountContact);
             insertAccount.executeUpdate();
 
-            JOptionPane.showMessageDialog(null, "Account Successfully Created");
-
             PreparedStatement createTable = c.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS `" + AccountUsername + "` ("
                     + "id INT NOT NULL AUTO_INCREMENT, "
@@ -70,7 +68,7 @@ public class CreateUser extends javax.swing.JFrame {
                     + "PRIMARY KEY (id))"
             );
             createTable.executeUpdate();
-            JOptionPane.showMessageDialog(null, "All data are saved.");
+            JOptionPane.showMessageDialog(null, "Account Successfully Created");
             Vcheck = 0;
 
         } catch (SQLException ex) {

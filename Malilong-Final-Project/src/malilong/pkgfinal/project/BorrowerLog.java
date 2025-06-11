@@ -8,8 +8,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,14 +22,16 @@ import javax.swing.table.DefaultTableModel;
 public class BorrowerLog extends javax.swing.JFrame {
 
     DefaultTableModel model;
+
     public BorrowerLog() {
         initComponents();
         model = (DefaultTableModel) BorrowersLog.getModel();
         model.setRowCount(0);
         LoadTable();
     }
+
     void LoadTable() {
-        
+
         model.setRowCount(0);
         DBconnection.init();
         Connection c = DBconnection.getConnection();
@@ -42,7 +47,57 @@ public class BorrowerLog extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(BookInvetory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BorrowerLog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void ReturnBook(String Username, String BookRef) {
+        DBconnection.init();
+        try {
+            Connection c = DBconnection.getConnection();
+
+            PreparedStatement ps = c.prepareStatement(
+                    "UPDATE " + Username + " set remarks = ? WHERE reference = ?"
+            );
+            LocalDateTime now = LocalDateTime.now();
+            String formatted = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            ps.setString(1, "Returned");
+            ps.setString(2, BookRef);
+            ps.executeUpdate();
+            ps.close();
+            ps = c.prepareStatement(
+                    "UPDATE borrowerslog set Remarks = ? WHERE bookreference = ? "
+            );
+            ps.setString(1, "Returned");
+            ps.setString(2, BookRef);
+            ps.executeUpdate();
+            ps.close();
+
+            // ✅ Step 4: Decrease count in inventory
+            ps = c.prepareStatement("SELECT borrowed FROM inventory WHERE bookreference = ?");
+            ps.setString(1, BookRef);
+            ResultSet rs = ps.executeQuery();
+
+            int borrowed = 0;
+            if (rs.next()) {
+                borrowed = rs.getInt("borrowed");
+            }
+            rs.close();
+            ps.close();
+
+            int updatedBorrowed = Math.max(borrowed - 1, 0); 
+            ps = c.prepareStatement("UPDATE inventory SET borrowed = ? WHERE bookreference = ?");
+            ps.setInt(1, updatedBorrowed);
+            ps.setString(2, BookRef);
+            ps.executeUpdate();
+            ps.close();
+
+            JOptionPane.showMessageDialog(null, "Book successfully returned!");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage());
         }
     }
 
@@ -59,9 +114,14 @@ public class BorrowerLog extends javax.swing.JFrame {
         BorrowersLog = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        Bookreference = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        Username = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(935, 550));
+        setPreferredSize(new java.awt.Dimension(935, 630));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -84,6 +144,11 @@ public class BorrowerLog extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        BorrowersLog.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BorrowersLogMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(BorrowersLog);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 900, 402));
@@ -100,6 +165,22 @@ public class BorrowerLog extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
 
+        jLabel2.setText("Reference");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 500, -1, -1));
+        getContentPane().add(Bookreference, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, 260, -1));
+
+        jLabel3.setText("Username");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
+        getContentPane().add(Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 570, 260, -1));
+
+        jButton2.setText("Return Book");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 520, -1, -1));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -109,6 +190,33 @@ public class BorrowerLog extends javax.swing.JFrame {
         open.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void BorrowersLogMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BorrowersLogMouseClicked
+        try {
+            if (evt.getClickCount() == 2) {
+                int selected = BorrowersLog.getSelectedRow();
+                if (selected != -1) {
+                    String getref = BorrowersLog.getValueAt(selected, 1).toString();
+
+                    Bookreference.setText(getref);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error loading selected book: " + e.getMessage());
+        }
+    }//GEN-LAST:event_BorrowersLogMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String Refer = Bookreference.getText();
+        String Account = Username.getText();
+        
+        if (Refer.isEmpty() || Account.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Fill the information correctly!");
+        } else {
+            ReturnBook(Account, Refer);
+            LoadTable();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,9 +254,14 @@ public class BorrowerLog extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Bookreference;
     private javax.swing.JTable BorrowersLog;
+    private javax.swing.JTextField Username;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
