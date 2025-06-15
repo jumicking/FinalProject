@@ -94,32 +94,41 @@ public class CreateUser extends javax.swing.JFrame {
         userpasswordf = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(400, 400));
+        setPreferredSize(new java.awt.Dimension(580, 450));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Create Account");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
-        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 300, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 310, -1));
+        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 370, -1));
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Username");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Name");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
-        getContentPane().add(FullName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 300, -1));
-        getContentPane().add(contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 300, -1));
+        getContentPane().add(FullName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 370, -1));
+        getContentPane().add(contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 370, -1));
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Contact");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Password");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
-        getContentPane().add(userpasswordf, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 300, -1));
+        getContentPane().add(userpasswordf, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 370, -1));
 
+        jButton1.setBackground(new java.awt.Color(51, 102, 255));
+        jButton1.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Submit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,13 +137,19 @@ public class CreateUser extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
 
+        jButton2.setBackground(new java.awt.Color(204, 0, 0));
+        jButton2.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, -1, -1));
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/malilong/pkgfinal/project/pic 9.jpg"))); // NOI18N
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -208,6 +223,7 @@ public class CreateUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField username;
     private javax.swing.JTextField userpasswordf;
     // End of variables declaration//GEN-END:variables

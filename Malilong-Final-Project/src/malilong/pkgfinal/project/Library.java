@@ -57,31 +57,41 @@ public class Library extends javax.swing.JFrame {
         usernames = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         passwords = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(400, 350));
+        setPreferredSize(new java.awt.Dimension(700, 470));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("STZhongsong", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("PUBLIC LIBRARY");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 41, 323, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 350, -1));
 
+        jButton1.setBackground(new java.awt.Color(51, 102, 255));
+        jButton1.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Log In");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 250, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 290, 90, -1));
 
-        jLabel2.setText("Username");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
-        getContentPane().add(usernames, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 310, -1));
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Username:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, -1, -1));
+        getContentPane().add(usernames, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 310, -1));
 
-        jLabel3.setText("Password");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
-        getContentPane().add(passwords, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 310, -1));
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Password:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, -1, -1));
+        getContentPane().add(passwords, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 310, -1));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/malilong/pkgfinal/project/pic 5.jpg"))); // NOI18N
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 500));
 
         pack();
         setLocationRelativeTo(null);
@@ -150,6 +160,7 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField passwords;
     private javax.swing.JTextField usernames;
     // End of variables declaration//GEN-END:variables
