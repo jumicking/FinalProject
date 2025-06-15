@@ -9,10 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author yuanb
- */
+
 public class DBconnection {
     private static Connection Myconnection;
 
@@ -25,7 +22,7 @@ public class DBconnection {
 
                 System.out.println("Class not found");
             }
-            Myconnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false", "root", "rootroot");
+            Myconnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false", "root", "root");
         } catch (SQLException e) {
             System.out.println(e);
 
@@ -38,7 +35,7 @@ public class DBconnection {
         } else {
             try {
 
-                Myconnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false", "root", "rootroot");
+                Myconnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false", "root", "root");
 
             } catch (Exception ex) {
                 System.out.println(ex);

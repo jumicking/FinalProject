@@ -13,20 +13,30 @@ import java.util.logging.Logger;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author yuanb
- */
 public class BookInvetory extends javax.swing.JFrame {
 
     DefaultTableModel model;
+    TableRowSorter<DefaultTableModel> sorter;
+    
 
     public BookInvetory() {
         initComponents();
+        SearchButton.setText("Search");
         model = (DefaultTableModel) Inventory.getModel();
+        sorter = new TableRowSorter<>(model);
+        Inventory.setRowSorter(sorter);
         model.setRowCount(0);
         LoadTable();
+      
+        SearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchButtonActionPerformed(evt);
+            }
+        });
+      
     }
 
     void LoadTable() {
@@ -51,32 +61,29 @@ public class BookInvetory extends javax.swing.JFrame {
     }
 
     void AddBook(String BookRef, String BookName, int BookNumb) {
-        try {
-            initComponents();
-            DBconnection.init();
-            Connection c = DBconnection.getConnection();
+         try {
+        DBconnection.init();
+        Connection c = DBconnection.getConnection();
 
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM inventory WHERE bookreference = ?");
-            ps.setString(1, BookRef);
-            ResultSet rs = ps.executeQuery();
+        PreparedStatement ps = c.prepareStatement("SELECT * FROM inventory WHERE bookreference = ?");
+        ps.setString(1, BookRef);
+        ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-
-                JOptionPane.showMessageDialog(null, "Book reference already exists! Please choose another one.");
-                return;
-
-            }
-            c = DBconnection.getConnection();
-            ps = c.prepareStatement("Insert into inventory (bookreference, bookname, totalbooks) values(?,?,?)");
-            ps.setString(1, BookRef);
-            ps.setString(2, BookName);
-            ps.setInt(3, BookNumb);
-            ps.execute();
-            JOptionPane.showMessageDialog(null, "Data Successfully Saved");
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error: " + ex);
+        if (rs.next()) {
+            JOptionPane.showMessageDialog(null, "Book reference already exists! Please choose another one.");
+            return;
         }
+
+        ps = c.prepareStatement("INSERT INTO inventory (bookreference, bookname, totalbooks) VALUES (?, ?, ?)");
+        ps.setString(1, BookRef);
+        ps.setString(2, BookName);
+        ps.setInt(3, BookNumb);
+        ps.execute();
+
+        JOptionPane.showMessageDialog(null, "Data Successfully Saved");
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error: " + ex);
+    }
     }
 
     void UpdateBook(String BookRef, String BookName, int BookNumb, int Id) {
@@ -144,6 +151,9 @@ public class BookInvetory extends javax.swing.JFrame {
         BookNumbers = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         InventoryID = new javax.swing.JTextField();
+        SearchBar = new javax.swing.JTextField();
+        SearchButton = new javax.swing.JButton();
+        ClearButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(910, 600));
@@ -183,7 +193,7 @@ public class BookInvetory extends javax.swing.JFrame {
             Inventory.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(46, 130, 490, -1));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         jLabel1.setText("Book Inventory");
@@ -195,7 +205,7 @@ public class BookInvetory extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 360, -1, -1));
 
         jButton2.setText("Submit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -224,6 +234,29 @@ public class BookInvetory extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 290, -1, -1));
         getContentPane().add(InventoryID, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 310, 240, -1));
 
+        SearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchBarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(SearchBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 330, -1));
+
+        SearchButton.setText("Search");
+        SearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(SearchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, -1, -1));
+
+        ClearButton.setText("Clear");
+        ClearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(ClearButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 70, -1));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -236,17 +269,16 @@ public class BookInvetory extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String selecteditem = Selections.getSelectedItem().toString();
-        String Bookref = BookReference.getText().trim();
-        String Title = BookTitle.getText().trim();
-        String idText = InventoryID.getText().trim();
-        String numbersText = BookNumbers.getText().trim();
+    String Bookref = BookReference.getText().trim();
+    String Title = BookTitle.getText().trim();
+    String idText = InventoryID.getText().trim();
+    String numbersText = BookNumbers.getText().trim();
 
-        if (Bookref.isEmpty() || Title.isEmpty() || numbersText.isEmpty()
-                || (selecteditem.equals("Update") && idText.isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Please fill out all required fields.");
-            return;
-        }
-
+    if (Bookref.isEmpty() || Title.isEmpty() || numbersText.isEmpty()
+            || (selecteditem.equals("Update") && idText.isEmpty())) {
+        JOptionPane.showMessageDialog(null, "Please fill out all required fields.");
+        return;
+    } else {
         try {
             int Numbers = Integer.parseInt(numbersText);
             int IId = idText.isEmpty() ? 0 : Integer.parseInt(idText);
@@ -254,9 +286,11 @@ public class BookInvetory extends javax.swing.JFrame {
             switch (selecteditem) {
                 case "Add":
                     AddBook(Bookref, Title, Numbers);
+                    clearFields();
                     break;
                 case "Update":
                     UpdateBook(Bookref, Title, Numbers, IId);
+                    clearFields();
                     break;
                 case "Delete":
                     int confirm = JOptionPane.showConfirmDialog(null,
@@ -264,6 +298,7 @@ public class BookInvetory extends javax.swing.JFrame {
                             "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         DeleteBook(Bookref);
+                        clearFields();
                     }
                     break;
                 default:
@@ -278,6 +313,7 @@ public class BookInvetory extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Unexpected error: " + e.getMessage());
             e.printStackTrace();
         }
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void InventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InventoryMouseClicked
@@ -300,6 +336,31 @@ public class BookInvetory extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error loading selected book: " + e.getMessage());
         }
     }//GEN-LAST:event_InventoryMouseClicked
+
+    private void SearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBarActionPerformed
+        
+    }//GEN-LAST:event_SearchBarActionPerformed
+
+    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
+
+        String query = SearchBar.getText().trim();
+
+        if (query.isEmpty()) {
+            sorter.setRowFilter(null); // show all rows if query is empty
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
+        }
+
+    }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearButtonActionPerformed
+        
+        clearFields();                    // Clear all text fields
+        SearchBar.setText("");            // Clear the search bar
+        sorter.setRowFilter(null);       // Remove any active filters
+        LoadTable();                     // Reload full inventory table
+        
+    }//GEN-LAST:event_ClearButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,13 +396,24 @@ public class BookInvetory extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void clearFields() {
+    BookReference.setText("");
+    BookTitle.setText("");
+    InventoryID.setText("");
+    BookNumbers.setText("");
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField BookNumbers;
     private javax.swing.JTextField BookReference;
     private javax.swing.JTextField BookTitle;
+    private javax.swing.JButton ClearButton;
     private javax.swing.JTable Inventory;
     private javax.swing.JTextField InventoryID;
+    private javax.swing.JTextField SearchBar;
+    private javax.swing.JButton SearchButton;
     private javax.swing.JComboBox<String> Selections;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -352,4 +424,6 @@ public class BookInvetory extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    
 }

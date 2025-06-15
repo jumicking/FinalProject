@@ -4,10 +4,7 @@
  */
 package malilong.pkgfinal.project;
 
-/**
- *
- * @author yuanb
- */
+
 public class Librarian extends javax.swing.JFrame {
 
     private String Username;

@@ -15,10 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author yuanb
- */
+
 public class BorrowerLog extends javax.swing.JFrame {
 
     DefaultTableModel model;
@@ -121,7 +118,7 @@ public class BorrowerLog extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(935, 630));
+        setPreferredSize(new java.awt.Dimension(935, 650));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -214,6 +211,8 @@ public class BorrowerLog extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Fill the information correctly!");
         } else {
             ReturnBook(Account, Refer);
+            Bookreference.setText("");
+            Username.setText("");
             LoadTable();
         }
     }//GEN-LAST:event_jButton2ActionPerformed

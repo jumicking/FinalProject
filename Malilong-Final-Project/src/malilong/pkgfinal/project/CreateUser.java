@@ -12,10 +12,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author yuanb
- */
 public class CreateUser extends javax.swing.JFrame {
 
     private String user;

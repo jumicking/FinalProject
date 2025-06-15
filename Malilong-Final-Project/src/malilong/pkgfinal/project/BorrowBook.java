@@ -14,10 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author yuanb
- */
+
 public class BorrowBook extends javax.swing.JFrame {
 
     LocalDateTime now = LocalDateTime.now();
