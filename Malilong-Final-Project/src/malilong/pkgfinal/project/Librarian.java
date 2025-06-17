@@ -62,7 +62,7 @@ public class Librarian extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 160, 40));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 160, 40));
 
         jButton3.setBackground(new java.awt.Color(102, 51, 0));
         jButton3.setForeground(new java.awt.Color(255, 204, 204));
@@ -82,7 +82,7 @@ public class Librarian extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 160, 40));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 160, 40));
 
         jButton5.setBackground(new java.awt.Color(0, 102, 204));
         jButton5.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N

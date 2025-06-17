@@ -94,7 +94,7 @@ public class User extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Reference", "Date", "Title", "Remarks"
+                "Date", "Reference", "Title", "Remarks"
             }
         ));
         jScrollPane1.setViewportView(UserTable);
